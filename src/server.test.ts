@@ -1,12 +1,14 @@
-import server from '../src/server';
+import server, { listSockets } from '../src/server';
 import * as config from './config/config';
    
 let url = `${config.endpoint}:${config.port}`;
 
+// Create clients connected at url
 let client1 = require('socket.io-client')(url);
 let client2 = require('socket.io-client')(url);
 let client3 = require('socket.io-client')(url);
 
+// Run Server
 beforeAll((done) => {
   server.listen(process.env.PORT, function() {
     console.log(`Server listening on port test ${process.env.PORT}`);
@@ -43,11 +45,17 @@ test(`Test return True if message is in broadcast ( from client1, to 2,3)`, (don
   });
 
   client1.emit('message', message);
+
 });
 
 afterAll((done) => {
   client1.disconnect();
   client2.disconnect();
   client3.disconnect();
-  server.close(()=>done());
+
+  server.close(()=> {
+    // Check no sockets in pending (in array/DB)
+    expect(listSockets().length).toBe(0);
+    done()
+  });
 });

@@ -1,12 +1,12 @@
 {
-  "name": "pagopa",
+  "name": "chat-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "a simple chat server",
   "main": "server.js",
   "scripts": {
     "build": "rimraf ./build && tsc",
     "start:dev": "nodemon",
-    "start": "npm run build && node build/server.js",
+    "start": "npm run build && node dist/server.js",
     "test": "jest --detectOpenHandles",
     "coverage": "nyc -r text -e .ts -x \"tests/*.test.ts\" npm run test"
   },
@@ -19,7 +19,6 @@
     "@types/node": "^14.0.27",
     "jest": "^26.4.0",
     "nodemon": "^2.0.4",
-    "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.2.0",
     "ts-node": "^8.10.2",
