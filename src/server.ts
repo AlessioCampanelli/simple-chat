@@ -23,7 +23,7 @@ chatserver.on('connection', (socket: Socket) => {
 
   socket.on('message', (data: any) => {
     logger.info(`Received message ${data} from ${socket.id}`);
-    broadcastSend(socket.id, data);
+    broadcastSend(data.toString());
   });
 
   socket.on('disconnect', () => {
@@ -33,7 +33,6 @@ chatserver.on('connection', (socket: Socket) => {
   socket.on('error', function(error) {
     logger.error(`Socket ${socket.id} error ${error.message}`);
   });
-
 });
 
 /**
@@ -41,21 +40,16 @@ chatserver.on('connection', (socket: Socket) => {
  * @param from represents socket id
  * @param msg message to sent all
  */
-function broadcastSend(from: string, msg: string) {
+function broadcastSend(msg: string) {
 
   if (sockets.length === 0) {
     logger.info('No sockets opened.');
     return;
   }
 
-  sockets.forEach((socket, index, array) => {
-
-    console.log('socket.id: ', socket.id);
-
-    // if (socket.id === from) {
-      socket.emit('message', msg);
-    // }
-  })
+  sockets.forEach((socket) => {  
+    socket.emit('message', msg);
+  });
 }
 
 /**

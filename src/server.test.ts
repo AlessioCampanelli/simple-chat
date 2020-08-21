@@ -18,14 +18,12 @@ beforeAll((done) => {
 
 test(`Test return True if user (client1) is connected`, (done) => {
   
-  client1.on('connect', function(data: any){
-    console.log('user connected, ', client1.connected);
+  client1.on('connect', function(data: any) {
     expect(client1.connected).toBe(true);
     done();
   });
 
   client1.on('disconnect', function(){
-    console.log('user disconnect, ', client1.connected);
     done();
   }); 
 });
@@ -34,18 +32,17 @@ test(`Test return True if message is in broadcast ( from client1, to 2,3)`, (don
   
   let message = 'Hello'
 
-  client2.on('message', function(data: any) {
-    expect(data).toBe(message);
-    done();
-  });
-
   client3.on('message', function(data: any) {
     expect(data).toBe(message);
     done();
   });
 
-  client1.emit('message', message);
+  client2.on('message', function(data: any) {
+    expect(data).toBe(message);
+    done();
+  });
 
+  client1.send(message);
 });
 
 afterAll((done) => {
